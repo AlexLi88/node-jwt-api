@@ -48,3 +48,6 @@ if (app.get('env') === 'development') {
 
 app.listen(port)
 console.log("Server is listening on port " + port)
+
+//in order to test server exports app module.
+module.exports = app;   
