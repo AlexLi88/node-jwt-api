@@ -1,15 +1,33 @@
 const mongoose = require('mongoose'),
-	  bcrypt = require('bcrypt');
+	  bcrypt = require('bcrypt'),
+	  config = require('../config')
 
 var UserSchema = new mongoose.Schema({
 	email: {
 		type: String,
 		lowercase: true,
 		required: true,
+		validate:{
+			validator: function(v){
+				return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v);
+			},
+			message: '{VALUE} is not a valid email address!'
+		},
 		unique: true
 	},
 	password:{
 		type: String,
+		required: true
+	},
+	userName:{
+		type: String, 
+		lowercase: true,
+		required: false,
+		unique: false,
+	},
+	userRole:{
+		type: String,
+		enum: config.database.userRole,
 		required: true
 	}
 })

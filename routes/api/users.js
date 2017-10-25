@@ -14,14 +14,17 @@ router.post('/register', function(req, res){
 	}else{
 		let newUser = new User({
 			email: req.body.email,
-			password: req.body.password
+			password: req.body.password,
+			userRole: req.body.userRole || config.database.userRole[1],
+			userName: req.body.userName || undefined,
 		})
 	
 		newUser.save(function(err){
 			if(err){
+				console.log(err);
 				return res.json({
 					success: false,
-					message: 'The email address is already taken'
+					message: err._message
 				});
 			}
 			res.status(201).json({
@@ -79,7 +82,9 @@ router.post('/auth', function(req, res){
 })
 
 // Example of required auth: protect dashboard route with JWT
-router.get('/dashboard', passport.authenticate('jwt', {session: false}), function(req, res) {
+router.get('/dashboard', passport.authenticate('jwt', {session: false}), function(req, res, next){
+	console.log(req.user);
+}, function(req, res) {
   	res.json({
   		success: true,
   		message: 'It worked! User id is: ' + req.user._id + '.' 
