@@ -3,7 +3,8 @@ const express = require('express'),
 	  passport = require('passport'),
 	  jwt = require('jsonwebtoken'),
 	  User = require('../../models/User'),
-	  config = require('../../config')
+	  config = require('../../config'),
+	  validAdmin = require('../../config/middlewares').validAdmin
 
 router.post('/register', function(req, res){
 	if(!req.body.email || !req.body.password){
@@ -81,10 +82,30 @@ router.post('/auth', function(req, res){
 	})
 })
 
+router.post('/role', passport.authenticate('jwt', {session: false}), function(req, res){
+	if(!req.body.role || (req.body.role !== config.database.userRole[0] && req.body.role != config.database.userRole[1])){
+		res.json({
+			success: false,
+			message: 'Please enter a valid role you want to change'
+		})
+	}
+
+	User.findById(req.user._id, function(err, user){
+		if(err) throw err;
+		user.role = req.body.role;
+		user.save(function(err, updatedUser){
+			if(err) throw err
+			res.json({
+				success: true,
+				message: `User role has been changed to ${updatedUser.role}`
+			})
+		})
+	})
+
+})
+
 // Example of required auth: protect dashboard route with JWT
-router.get('/dashboard', passport.authenticate('jwt', {session: false}), function(req, res, next){
-	console.log(req.user);
-}, function(req, res) {
+router.get('/dashboard', passport.authenticate('jwt', {session: false}), validAdmin, function(req, res) {
   	res.json({
   		success: true,
   		message: 'It worked! User id is: ' + req.user._id + '.' 
