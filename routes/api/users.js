@@ -48,6 +48,7 @@ router.post('/auth', function(req, res){
 			success: false,
 			message: 'Please enter email and passwrod'
 		})
+		return
 	}
 	const email = req.body.email,
 		  password = req.body.password
@@ -88,6 +89,7 @@ router.post('/role', passport.authenticate('jwt', {session: false}), function(re
 			success: false,
 			message: 'Please enter a valid role you want to change'
 		})
+		return 
 	}
 
 	User.findById(req.user._id, function(err, user){
