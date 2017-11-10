@@ -2,7 +2,7 @@ const express = require('express'),
 	  router = express.Router(),
 	  passport = require('passport'),
 	  jwt = require('jsonwebtoken'),
-	  Order = require('../../models/Place'),
+	  Place = require('../../models/Place'),
 	  config = require('../../config'),
 	  validAdmin = require('../../config/middlewares').validAdmin
 
@@ -28,7 +28,7 @@ router.post('/', passport.authenticate('jwt', {session: false}), validAdmin,  fu
 })
 
 router.get('/').passport.authenticate('jwt', {session: false}, validAdmin, function(req, res){
-
+	Place.find()
 })
 
 module.exports = router
