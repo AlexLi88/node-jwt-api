@@ -3,13 +3,14 @@ const express = require('express'),
 	  passport = require('passport'),
 	  jwt = require('jsonwebtoken'),
 	  Order = require('../../models/Place'),
-	  config = require('../../config');
+	  config = require('../../config'),
+	  validAdmin = require('../../config/middlewares').validAdmin
 
-router.post('/', passport.authenticate('jwt', {session: false}), function(req, res){
+router.post('/', passport.authenticate('jwt', {session: false}), validAdmin,  function(req, res){
 	if(!req.body.name || !req.body.loc){
 		res.json({
 			success: false,
-			message: 'Please enter name and location.'
+			message: 'Please enter name and location'
 		})
 	}else{
 		let newPlace = new Place({
@@ -23,8 +24,11 @@ router.post('/', passport.authenticate('jwt', {session: false}), function(req, r
 				message: "Successfully create new place"
 			})
 		})
-	}
-	
+	}	
+})
+
+router.get('/').passport.authenticate('jwt', {session: false}, validAdmin, function(req, res){
+
 })
 
 module.exports = router
