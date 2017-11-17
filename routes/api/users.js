@@ -61,7 +61,6 @@ router.post('/auth', function(req, res){
 				message: 'Authentication failed. User not found'
 			})
 		}else{
-			console.log(user);
 			user.validPassword(password, function(err, isMatch){
 				if(isMatch && !err){
 					let token = jwt.sign(JSON.parse(JSON.stringify(user)), config.passport.sccretOrKey, {
@@ -94,12 +93,12 @@ router.post('/role', passport.authenticate('jwt', {session: false}), function(re
 
 	User.findById(req.user._id, function(err, user){
 		if(err) throw err;
-		user.role = req.body.role;
+		user.userRole = req.body.role;
 		user.save(function(err, updatedUser){
 			if(err) throw err
 			res.json({
 				success: true,
-				message: `User role has been changed to ${updatedUser.role}`
+				message: `User role has been changed to ${updatedUser.userRole}`
 			})
 		})
 	})

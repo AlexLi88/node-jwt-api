@@ -27,8 +27,17 @@ router.post('/', passport.authenticate('jwt', {session: false}), validAdmin,  fu
 	}	
 })
 
-router.get('/').passport.authenticate('jwt', {session: false}, validAdmin, function(req, res){
-	Place.find()
+router.get('/' , passport.authenticate('jwt', {session: false}), validAdmin, function(req, res){
+	const query = req.query
+	console.log(query)
+	Place.findOne(query, function(err, place){
+		if(err) throw err;
+		console.log(place);
+		res.json({
+			success: true,
+			places: place
+		})
+	})
 })
 
 module.exports = router
