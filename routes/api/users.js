@@ -106,7 +106,7 @@ router.post('/role', passport.authenticate('jwt', {session: false}), function(re
 })
 
 // Example of required auth: protect dashboard route with JWT
-router.get('/dashboard', passport.authenticate('jwt', {session: false}), validAdmin, function(req, res) {
+router.get('/dashboard', passport.authenticate('jwt', {session: false}), function(req, res) {
   	res.json({
   		success: true,
   		message: 'It worked! User id is: ' + req.user._id + '.' 

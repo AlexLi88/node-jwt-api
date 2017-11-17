@@ -18,8 +18,11 @@ mongoose.connection.openUri(config.database.local)
     console.warn('Warning', error);
   });
 
+if(app.get('env') !== 'test' ) {
+    //use morgan to log at command line
+    app.use(logger('dev'));
+}
 
-app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
