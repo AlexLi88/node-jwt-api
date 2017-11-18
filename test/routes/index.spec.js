@@ -77,7 +77,8 @@ describe('Test routes', function(){
         it('should be invalid if token generated two days ago', function(done){
             authenticate().then(
                 res=>{
-                    const accessToken = res.body.accessToken;
+                    const accessToken = res.body.accessToken
+                    //tick clock to two days later
                     clock.tick(60 * 60 * 24 * 2 * 1000)
                     chai.request(server)
                         .get(`${apiPath}/users/dashboard`)
@@ -86,6 +87,28 @@ describe('Test routes', function(){
                         .end((err, res)=>{
                             expect(err).to.exist;
                             expect(res.status).to.equal(401)
+                            done()
+                        })
+                }
+            )
+        })
+
+        it('should change the user\'s role to ROLE_ADMIN', function(done){
+            authenticate().then(
+                res=>{
+                    const accessToken = res.body.accessToken
+                    const role = "ROLE_ADMIN"
+                    let data = {role}
+                    chai.request(server)
+                        .post(`${apiPath}/users/role`)
+                        .send(data)
+                        .set('Authorization', `Bearer ${accessToken}`)
+                        .set('Content-Type', 'application/json')
+                        .end((err, res)=>{
+                            expect(err).to.be.null;
+                            expect(res.status).to.equal(200)
+                            expect(res.body.success).to.equal(true)
+                            expect(res.body.message).to.equal(`User role has been changed to ${role}`)
                             done()
                         })
                 }
