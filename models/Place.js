@@ -10,6 +10,8 @@ var PlaceSchema = new mongoose.Schema({
 		index: '2dsphere',
 		required: true
 	}
+}, {
+	versionKey: false
 })
 
 module.exports = mongoose.model('Place', PlaceSchema);

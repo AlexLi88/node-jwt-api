@@ -6,17 +6,21 @@ const express = require('express'),
 	  config = require('../../config');
 	  // validAdmin = require('../../config/middlewares').validAdmin
 
+/**
+ *
+ */
 router.post('/', passport.authenticate('jwt', {session: false}), function(req, res){
 	const requestUser = req.user
 	let newOrder = new Order({
 			createUser: requestUser._id,
 			accepted: false
 	})
-	newOrder.save(function(err){
+	newOrder.save(function(err, savedOrder){
 		if(err) throw err
 		res.status(201).json({
 			success: true,
-			message: "Successfully created order"
+			message: "Successfully created order",
+			order: savedOrder
 		})
 	})
 })

@@ -30,7 +30,10 @@ var UserSchema = new mongoose.Schema({
 		enum: config.database.userRole,
 		required: true
 	}
-}, { runSettersOnQuery: true })
+}, {
+		runSettersOnQuery: true,
+		versionKey: false
+	})
 
 
 UserSchema.pre('save', function(next){
