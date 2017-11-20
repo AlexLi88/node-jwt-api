@@ -26,6 +26,21 @@ router.post('/', passport.authenticate('jwt', {session: false}), function(req, r
 })
 
 /**
+ * Return all orders of the requestUser
+ */
+router.get('/', passport.authenticate('jwt', {session: false}), function(req, res){
+	const requestUser = req.user
+	Order.find({createUser: requestUser._id}, function(err, orders){
+		if(err) throw err
+		res.json({
+			success: true,
+			orders
+		})
+	})
+})
+
+
+/**
  *
  */
 router.get('/:orderId', passport.authenticate('jwt', {session: false}), function(req, res){
