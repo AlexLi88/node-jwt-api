@@ -21,6 +21,9 @@ router.post('/', passport.authenticate('jwt', {session: false}), function(req, r
 	})
 })
 
+/**
+ *
+ */
 router.get('/:orderId', passport.authenticate('jwt', {session: false}), function(req, res){
 	const requestUser = req.user
 	const orderId = req.params.orderId

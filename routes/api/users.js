@@ -63,7 +63,7 @@ router.post('/auth', function(req, res){
 		}else{
 			user.validPassword(password, function(err, isMatch){
 				if(isMatch && !err){
-					let token = jwt.sign(JSON.parse(JSON.stringify(user)), config.passport.sccretOrKey, {
+					let token = jwt.sign(JSON.parse(JSON.stringify(user)), config.passport.secretOrKey, {
 						expiresIn: "2 days"
 					})
 					res.json({

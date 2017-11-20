@@ -50,20 +50,4 @@ describe('Test table models', function(){
       })
     })
 
-
-    // it('should create a new user', function(done){
-    //     let user = {
-    //         email: 'a@test.ca',
-    //         password: '1234567890'
-    //     }
-    //     chai.request(server)
-    //         .post(`${apiPath}/users/register`)
-    //         .send(user)
-    //         .end((err, res)=>{
-    //         expect(res.body.message).to.equal('Successfully created new user.')
-    //     expect(res.status).to.equal(201)
-    //     done()
-    // })
-
-
 })
